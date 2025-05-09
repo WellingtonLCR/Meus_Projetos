@@ -128,4 +128,3 @@ function carregarListaDespesas() {
         linha.insertCell(3).innerHTML = d.valor;
     });
 }
-//Listando despesa
