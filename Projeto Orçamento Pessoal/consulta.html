@@ -27,7 +27,7 @@
     <script src="app.js"></script>
   </head>
 
-  <body>
+  <body onload="carregarListaDespesas()">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
       <div class="container">
         <a class="navbar-brand" href="#">
@@ -129,7 +129,8 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="listaDespesas">
+              
             </tbody>
           </table>
         </div>
