@@ -17,7 +17,6 @@ class Despesa {
         return true
     }
 }
-
 class Bd {
     constructor() {
         let id = localStorage.getItem('id');
@@ -27,7 +26,6 @@ class Bd {
             localStorage.setItem('id', id);
         }
     }
-
     getProximoId() {
         let id = Number(localStorage.getItem('id'));
         if (isNaN(id) || id < 0) id = 0;
@@ -58,9 +56,7 @@ class Bd {
         return despesas;
     }
 }
-
 let bd = new Bd();
-
 function cadastrarDespesa() {
     let ano = document.getElementById('ano');
     let mes = document.getElementById('mes');
@@ -88,6 +84,13 @@ function cadastrarDespesa() {
         document.getElementById('modal_btn').className = 'btn btn-success';
         //dialog de sucesso
         $('#modalRegistraDespesa').modal('show');
+        //limpar campos
+        ano.value = '';
+        mes.value = '';
+        dia.value = '';
+        tipo.value = '';
+        descricao.value = '';
+        valor.value = '';
     } else {
         //dialog de erro
         document.getElementById('modal_titulo').innerHTML = 'Erro na inclusão do registro';
@@ -98,7 +101,6 @@ function cadastrarDespesa() {
         $('#modalRegistraDespesa').modal('show');
     }
 }
-
 function carregarListaDespesas() {
     let despesas = Array();
 
