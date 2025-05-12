@@ -44,26 +44,27 @@ class Bd {
         if (isNaN(id) || id < 0) id = 0
 
         for (let i = 1; i <= id; i++) {
-            let despesa = localStorage.getItem(i)
-            if (despesa !== null) {
+            let despesaStr = localStorage.getItem(i)
+            if (despesaStr !== null) {
                 try {
-                    despesas.push(JSON.parse(despesa))
+                    let despesaObj = JSON.parse(despesaStr)
+                    despesaObj.id = i  // adiciona o ID ao objeto
+                    despesas.push(despesaObj)
                 } catch (e) {
-                    // Se o dado estiver corrompido, apenas ignore
+                    console.error(`Erro ao parsear a despesa com ID ${i}:`, e)
                 }
             }
         }
         return despesas
     }
-    pesquisar(despesa){
+    pesquisar(despesa) {
 
         let despesasFiltradas = Array()
 
         despesasFiltradas = this.recuperarTodosRegistros()
 
-    
         console.log(despesa)
-        
+
         if (despesa.ano != '') {
             console.log('filto de ano')
             despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
@@ -90,7 +91,10 @@ class Bd {
         }
         console.log(despesasFiltradas)
         return despesasFiltradas
-    }   
+    }
+    remover(id) {
+        localStorage.removeItem(id)
+    }
 }
 
 let bd = new Bd()
@@ -138,9 +142,9 @@ function cadastrarDespesa() {
         $('#modalRegistraDespesa').modal('show')
     }
 }
-function carregarListaDespesas( despesas = Array(), filtro = false) {
+function carregarListaDespesas(despesas = Array(), filtro = false) {
     if (despesas.length == 0 && filtro == false) despesas = bd.recuperarTodosRegistros()
-    
+
     let listaDespesas = document.getElementById('listaDespesas')
     listaDespesas.innerHTML = ''
 
@@ -164,6 +168,20 @@ function carregarListaDespesas( despesas = Array(), filtro = false) {
         linha.insertCell(1).innerHTML = d.tipo
         linha.insertCell(2).innerHTML = d.descricao
         linha.insertCell(3).innerHTML = d.valor
+
+        let btn = document.createElement('button')
+        btn.className = 'btn btn-danger'
+        btn.innerHTML = '<i class="fas fa-times"></i>'
+        btn.id = `id_despesa_${d.id}`
+        btn.onclick = function (){
+            let id = this.id.replace('id_despesa_', '')
+            //alert(id) // para testes de id da despesa
+            bd.remover(id)// remover o registro do banco de dados
+            window.location.reload()
+        }
+        linha.insertCell(4).append(btn)
+
+        console.log(d)
     })
 }
 
@@ -178,6 +196,6 @@ function pesquisarDespesa() {
     let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, descricao.value, valor.value)
 
     let despesas = bd.pesquisar(despesa)
- 
+
     this.carregarListaDespesas(despesas, true)
 }
