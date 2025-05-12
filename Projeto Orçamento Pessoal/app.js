@@ -7,7 +7,6 @@ class Despesa {
         this.descricao = descricao
         this.valor = valor
     }
-
     validarDados() {
         for (let i in this) {
             if (this[i] == undefined || this[i] == '' || this[i] == null) {
@@ -31,13 +30,11 @@ class Bd {
         if (isNaN(id) || id < 0) id = 0
         return id + 1
     }
-
     gravar(d) {
         let id = this.getProximoId()
         localStorage.setItem(id, JSON.stringify(d)) // Armazena a despesa com o ID gerado
         localStorage.setItem('id', id) // Atualiza o ID no localStorage
     }
-
     recuperarTodosRegistros() {
         let despesas = []
         let id = Number(localStorage.getItem('id'))
@@ -58,11 +55,8 @@ class Bd {
         return despesas
     }
     pesquisar(despesa) {
-
         let despesasFiltradas = Array()
-
         despesasFiltradas = this.recuperarTodosRegistros()
-
         console.log(despesa)
 
         if (despesa.ano != '') {
@@ -96,7 +90,6 @@ class Bd {
         localStorage.removeItem(id)
     }
 }
-
 let bd = new Bd()
 function cadastrarDespesa() {
     let ano = document.getElementById('ano')
@@ -114,10 +107,8 @@ function cadastrarDespesa() {
         descricao.value,
         valor.value
     )
-
     if (despesa.validarDados()) {
         bd.gravar(despesa)
-
         document.getElementById('modal_titulo').innerHTML = 'Registro inserido com sucesso'
         document.getElementById('modal_titulo_div').className = 'modal-header text-success'
         document.getElementById('modal_conteudo').innerHTML = 'Despesa registrada com sucesso'
@@ -151,7 +142,6 @@ function carregarListaDespesas(despesas = Array(), filtro = false) {
     // percorrer o array despesas, listando cada despesa de forma dinâmica
     despesas.forEach(function (d) {
         let linha = listaDespesas.insertRow()
-
         linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`
         switch (d.tipo) {
             case '1': d.tipo = 'Alimentação'
@@ -173,18 +163,16 @@ function carregarListaDespesas(despesas = Array(), filtro = false) {
         btn.className = 'btn btn-danger'
         btn.innerHTML = '<i class="fas fa-times"></i>'
         btn.id = `id_despesa_${d.id}`
-        btn.onclick = function (){
+        btn.onclick = function () {
             let id = this.id.replace('id_despesa_', '')
             //alert(id) // para testes de id da despesa
             bd.remover(id)// remover o registro do banco de dados
-            window.location.reload()
+            window.location.reload()// recarregar a tela de forma programática
         }
         linha.insertCell(4).append(btn)
-
         console.log(d)
     })
 }
-
 function pesquisarDespesa() {
     let ano = document.getElementById('ano')
     let mes = document.getElementById('mes')
@@ -192,10 +180,8 @@ function pesquisarDespesa() {
     let tipo = document.getElementById('tipo')
     let descricao = document.getElementById('descricao')
     let valor = document.getElementById('valor')
-
     let despesa = new Despesa(ano.value, mes.value, dia.value, tipo.value, descricao.value, valor.value)
-
     let despesas = bd.pesquisar(despesa)
-
+    
     this.carregarListaDespesas(despesas, true)
 }
