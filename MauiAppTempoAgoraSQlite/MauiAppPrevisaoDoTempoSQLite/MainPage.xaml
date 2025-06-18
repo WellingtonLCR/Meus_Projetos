@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppPrevisaodoTempo.MainPage">
+
+    <StackLayout Padding="10">
+        <Entry x:Name="cidadeEntry" Placeholder="Digite a cidade" />
+        <Button Text="Pesquisar" Clicked="OnPesquisarClicked"/>
+
+        <StackLayout Padding="10" Spacing="10">
+            <Label Text="Cidade:" FontAttributes="Bold"/>
+            <Label x:Name="cidadeLabel" />
+
+            <Label Text="Temperatura:" FontAttributes="Bold"/>
+            <Label x:Name="temperaturaLabel" />
+
+            <Label Text="Data:" FontAttributes="Bold"/>
+            <Label x:Name="dataLabel" />
+        </StackLayout>
+
+        <ListView ItemsSource="{Binding Consultas}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Cidade}" Detail="{Binding DataPesquisa}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+</ContentPage>
+    
